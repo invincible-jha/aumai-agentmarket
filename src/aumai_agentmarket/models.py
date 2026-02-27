@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -27,7 +27,7 @@ class AgentListing(BaseModel):
         ..., description="Shell command to install the agent."
     )
     created_at: datetime = Field(
-        default_factory=datetime.utcnow,
+        default_factory=lambda: datetime.now(tz=timezone.utc),
         description="UTC timestamp of listing creation.",
     )
 
@@ -39,7 +39,7 @@ class AgentReview(BaseModel):
     rating: float = Field(..., ge=0.0, le=5.0, description="Star rating (0–5).")
     comment: str = Field(default="", description="Optional review text.")
     created_at: datetime = Field(
-        default_factory=datetime.utcnow,
+        default_factory=lambda: datetime.now(tz=timezone.utc),
         description="UTC timestamp of the review.",
     )
 

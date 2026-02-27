@@ -26,13 +26,13 @@ class AgentCatalog:
         """
         self._listings[listing.agent_id] = listing
 
-    def search(self, filter: SearchFilter) -> list[AgentListing]:
+    def search(self, search_filter: SearchFilter) -> list[AgentListing]:
         """Search listings according to the provided filter.
 
         All non-None filter fields must match for a listing to be included.
 
         Args:
-            filter: Search parameters.
+            search_filter: Search parameters.
 
         Returns:
             Matching agent listings sorted by rating descending.
@@ -40,8 +40,8 @@ class AgentCatalog:
         results: list[AgentListing] = []
 
         for listing in self._listings.values():
-            if filter.query is not None:
-                query_lower = filter.query.lower()
+            if search_filter.query is not None:
+                query_lower = search_filter.query.lower()
                 text_match = (
                     query_lower in listing.name.lower()
                     or query_lower in listing.description.lower()
@@ -49,17 +49,17 @@ class AgentCatalog:
                 if not text_match:
                     continue
 
-            if filter.capabilities is not None:
+            if search_filter.capabilities is not None:
                 listing_caps = set(listing.capabilities)
-                if not all(cap in listing_caps for cap in filter.capabilities):
+                if not all(cap in listing_caps for cap in search_filter.capabilities):
                     continue
 
-            if filter.min_rating is not None and listing.rating < filter.min_rating:
+            if search_filter.min_rating is not None and listing.rating < search_filter.min_rating:
                 continue
 
-            if filter.tags is not None:
+            if search_filter.tags is not None:
                 listing_tags = set(listing.tags)
-                if not all(tag in listing_tags for tag in filter.tags):
+                if not all(tag in listing_tags for tag in search_filter.tags):
                     continue
 
             results.append(listing)

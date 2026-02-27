@@ -95,7 +95,7 @@ def publish_command(config_path: str) -> None:
 
 @main.command("serve")
 @click.option("--port", default=8000, show_default=True, help="HTTP port to listen on.")
-@click.option("--host", default="0.0.0.0", show_default=True, help="Bind address.")
+@click.option("--host", default="127.0.0.1", show_default=True, help="Bind address.")
 def serve_command(port: int, host: str) -> None:
     """Start the FastAPI marketplace server.
 
